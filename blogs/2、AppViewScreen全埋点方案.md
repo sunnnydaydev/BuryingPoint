@@ -26,3 +26,43 @@
 >
 > 3、扩展采集功能，收取更多的activity信息（页面标题）
 
+### 使用方式：
+
+###### 1、引入
+
+> 使用前首先需要导入module或者aar，这里就简介下aar的使用：
+>
+> [1、下载aar](https://github.com/sunnnydaydev/BuryingPoint/tree/master/autotrackappviewscreensdk/aar)
+>
+> [2、aar使用参考](https://blog.csdn.net/qq_38350635/article/details/100937972)
+
+###### 2、基本使用
+
+> 这个简单的sdk只是采集应用中的每个activity信息，每当用户打开一个activity时，日志就会打印（通过包名+activity名字过滤）
+
+```java
+ private void initAutoTrackViewScreenSdk(Application application) {
+        SensorsDataAPI.init(application);
+    }
+// log 栗子：
+com.sunnyday.administrator.buryingpoint I/SensorsDataAPI: {
+    	"event":"$AppViewScreen",
+    	"device_id":"779a1c98b906d7ac",
+    	"properties":{
+    		"$lib":"android",
+    		"$os_version":"9",
+    		"$app_name":"BuryingPoint",
+    		"$lib_version":"1.0.0",
+    		"$model":"vivo Z1",
+    		"$os":"Android",
+    		"$screen_width":1080,
+    		"$screen_height":2075,
+    		"$manufacturer":"vivo",
+    		"$app_version":"1.0",
+    		"$activity":"com.sunnyday.administrator.buryingpoint.MainActivity",
+    		"$title":"BuryingPoint"
+    	},
+    	"time":1582536705835
+    }
+```
+
