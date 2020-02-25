@@ -55,12 +55,13 @@ public class SensorsDataAPI {
             JSONObject sendProperties = new JSONObject(mDeviceInfo);// 设备信息
 
             if (properties != null) {
+                // 合并数据
                 SensorsDataPrivate.mergeJSONObject(properties, sendProperties);
             }
 
             jsonObject.put("properties", sendProperties);
             jsonObject.put("time", System.currentTimeMillis());
-
+            // 打印采集的数据
             Log.i(TAG, SensorsDataPrivate.formatJson(jsonObject.toString()));
         } catch (Exception e) {
             e.printStackTrace();

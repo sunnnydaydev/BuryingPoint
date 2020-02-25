@@ -159,6 +159,7 @@ public class SensorsDataPrivate {
 
     /**
      * 页面浏览
+     * 采集activity的信息
      */
     private static void trackViewScreen(Activity activity) {
         try {

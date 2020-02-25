@@ -30,5 +30,6 @@ dependencies {
      * 此处的括号不可省略，groovy允许在 顶级表达式 中可以省略方法的括号。
      * 某些情况下是不可省略的。我们尽量不省略为好。
     * */
-    implementation project (":autotrackappviewscreensdk")
+    implementation project (":autotrackappviewscreensdk")//activity 页面采集
+    implementation project (":autotrackappstartappendsdk")// app start & app end 采集
 }

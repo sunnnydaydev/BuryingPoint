@@ -1,2 +1,2 @@
-include ':app', ':autotrackappviewscreensdk'
+include ':app', ':autotrackappviewscreensdk', ':autotrackappstartappendsdk'
 rootProject.name='BuryingPoint'
