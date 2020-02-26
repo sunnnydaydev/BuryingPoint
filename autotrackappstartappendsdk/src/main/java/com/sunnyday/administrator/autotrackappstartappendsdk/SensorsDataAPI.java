@@ -24,7 +24,6 @@ public class SensorsDataAPI {
     private static final Object mLock = new Object();
 
     private SensorsDataAPI(Application application) {
-        // todo 待续
         mDeviceId = SensorsDataPrivate.getAndroidID(application.getApplicationContext());
         mDeviceInfo = SensorsDataPrivate.getDeviceInfo(application.getApplicationContext());
         SensorsDataPrivate.registerActivityLifecycleCallbacks(application);

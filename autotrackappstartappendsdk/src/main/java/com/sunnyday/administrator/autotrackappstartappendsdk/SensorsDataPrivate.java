@@ -33,7 +33,6 @@ import androidx.appcompat.app.AppCompatActivity;
 /**
  * Create by SunnyDay on 2020/02/25
  * <p>
- *
  */
 public class SensorsDataPrivate {
 
@@ -121,9 +120,7 @@ public class SensorsDataPrivate {
     public static void registerActivityLifecycleCallbacks(Application application) {
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-            }
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
 
             @Override
             public void onActivityStarted(Activity activity) {
@@ -328,7 +325,17 @@ public class SensorsDataPrivate {
         }
     }
 
+    /**
+     * get android id
+     * */
+    @SuppressLint("HardwareIds")
     public static String getAndroidID(Context applicationContext) {
-        return null;
+        String androidId = "";
+        try {
+            androidId = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return androidId;
     }
 }
