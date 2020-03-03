@@ -27,6 +27,7 @@ public class SensorsDataAPI {
         mDeviceId = SensorsDataPrivate.getAndroidID(application.getApplicationContext());
         mDeviceInfo = SensorsDataPrivate.getDeviceInfo(application.getApplicationContext());
         SensorsDataPrivate.registerActivityLifecycleCallbacks(application);
+        SensorsDataPrivate.registerActivityStateObserver(application);
     }
 
     public static SensorsDataAPI getInstance() {
@@ -36,7 +37,7 @@ public class SensorsDataAPI {
     /**
      * double check 方式单利进行初始化。
      */
-    public SensorsDataAPI init(Application application) {
+    public static  SensorsDataAPI init(Application application) {
         if (null == INSTANCE) {
             synchronized (mLock) {
                 if (null == INSTANCE) {

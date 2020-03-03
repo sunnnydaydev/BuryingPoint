@@ -9,8 +9,12 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.ContentObserver;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -18,6 +22,7 @@ import android.util.DisplayMetrics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,8 +40,11 @@ import androidx.appcompat.app.AppCompatActivity;
  * <p>
  */
 public class SensorsDataPrivate {
-
+    private static SensorsDatabaseHelper mDatabaseHelper;
     private static List<String> mIgnoredActivities;
+    private static CountDownTimer countDownTimer;
+    private static WeakReference<Activity> mCurrentActivity;
+    private final static int SESSION_INTERVAL_TIME = 30 * 1000;
 
     static {
         mIgnoredActivities = new ArrayList<>();
@@ -118,13 +126,39 @@ public class SensorsDataPrivate {
      * 注册activity生命周期
      */
     public static void registerActivityLifecycleCallbacks(Application application) {
+        mDatabaseHelper = new SensorsDatabaseHelper(application.getApplicationContext(), application.getPackageName());
+        countDownTimer = new CountDownTimer(SESSION_INTERVAL_TIME, 10 * 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                if (mCurrentActivity != null) {
+                    trackAppEnd(mCurrentActivity.get());
+                }
+            }
+        };
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            }
 
             @Override
             public void onActivityStarted(Activity activity) {
+                mDatabaseHelper.commitAppStart(true);
+                double timeDiff = System.currentTimeMillis() - mDatabaseHelper.getAppPausedTime();
+                if (timeDiff > SESSION_INTERVAL_TIME) {
+                    if (!mDatabaseHelper.getAppEndEventState()) {
+                        trackAppEnd(activity);
+                    }
+                }
 
+                if (mDatabaseHelper.getAppEndEventState()) {
+                    mDatabaseHelper.commitAppEndEventState(false);
+                    trackAppStart(activity);
+                }
             }
 
             @Override
@@ -134,7 +168,9 @@ public class SensorsDataPrivate {
 
             @Override
             public void onActivityPaused(Activity activity) {
-
+                mCurrentActivity = new WeakReference<>(activity);
+                countDownTimer.start();
+                mDatabaseHelper.commitAppPausedTime(System.currentTimeMillis());
             }
 
             @Override
@@ -326,8 +362,8 @@ public class SensorsDataPrivate {
     }
 
     /**
-     * get android id
-     * */
+     * 获得安卓id
+     */
     @SuppressLint("HardwareIds")
     public static String getAndroidID(Context applicationContext) {
         String androidId = "";
@@ -337,5 +373,56 @@ public class SensorsDataPrivate {
             e.printStackTrace();
         }
         return androidId;
+    }
+
+    /**
+     * Track $AppEnd 事件
+     */
+    private static void trackAppEnd(Activity activity) {
+        try {
+            if (activity == null) {
+                return;
+            }
+            JSONObject properties = new JSONObject();
+            properties.put("$activity", activity.getClass().getCanonicalName());
+            properties.put("$title", getActivityTitle(activity));
+            SensorsDataAPI.getInstance().track("$AppEnd", properties);
+            mDatabaseHelper.commitAppEndEventState(true);
+            mCurrentActivity = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Track $AppStart 事件
+     */
+    private static void trackAppStart(Activity activity) {
+        try {
+            if (activity == null) {
+                return;
+            }
+            JSONObject properties = new JSONObject();
+            properties.put("$activity", activity.getClass().getCanonicalName());
+            properties.put("$title", getActivityTitle(activity));
+            SensorsDataAPI.getInstance().track("$AppStart", properties);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 注册 AppStart 的监听
+     */
+    public static void registerActivityStateObserver(Application application) {
+        application.getContentResolver().registerContentObserver(mDatabaseHelper.getAppStartUri(),
+                false, new ContentObserver(new Handler()) {
+                    @Override
+                    public void onChange(boolean selfChange, Uri uri) {
+                        if (mDatabaseHelper.getAppStartUri().equals(uri)) {
+                            countDownTimer.cancel();
+                        }
+                    }
+                });
     }
 }

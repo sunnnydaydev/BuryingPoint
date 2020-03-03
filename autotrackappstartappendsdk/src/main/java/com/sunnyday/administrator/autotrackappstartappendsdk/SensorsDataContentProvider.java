@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -45,7 +46,26 @@ public class SensorsDataContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        int code = uriMatcher.match(uri);
+        MatrixCursor matrixCursor = null;
+        switch (code) {
+            case APP_START:
+                int appStart = sharedPreferences.getBoolean(SensorsDatabaseHelper.APP_STARTED, true) ? 1 : 0;
+                matrixCursor = new MatrixCursor(new String[]{SensorsDatabaseHelper.APP_STARTED});
+                matrixCursor.addRow(new Object[]{appStart});
+                break;
+            case APP_END_STATE:
+                int appEnd = sharedPreferences.getBoolean(SensorsDatabaseHelper.APP_END_STATE, true) ? 1 : 0;
+                matrixCursor = new MatrixCursor(new String[]{SensorsDatabaseHelper.APP_END_STATE});
+                matrixCursor.addRow(new Object[]{appEnd});
+                break;
+            case APP_PAUSED_TIME:
+                long pausedTime = sharedPreferences.getLong(SensorsDatabaseHelper.APP_PAUSED_TIME, 0);
+                matrixCursor = new MatrixCursor(new String[]{SensorsDatabaseHelper.APP_PAUSED_TIME});
+                matrixCursor.addRow(new Object[]{pausedTime});
+                break;
+        }
+        return matrixCursor;
     }
 
     @Nullable
@@ -56,8 +76,28 @@ public class SensorsDataContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
+        if (contentValues == null) {
+            return uri;
+        }
+        int code = uriMatcher.match(uri);
+        switch (code) {
+            case APP_START:
+                boolean appStart = contentValues.getAsBoolean(SensorsDatabaseHelper.APP_STARTED);
+                mEditor.putBoolean(SensorsDatabaseHelper.APP_STARTED, appStart);
+                mContentResolver.notifyChange(uri, null);
+                break;
+            case APP_END_STATE:
+                boolean appEnd = contentValues.getAsBoolean(SensorsDatabaseHelper.APP_END_STATE);
+                mEditor.putBoolean(SensorsDatabaseHelper.APP_END_STATE, appEnd);
+                break;
+            case APP_PAUSED_TIME:
+                long pausedTime = contentValues.getAsLong(SensorsDatabaseHelper.APP_PAUSED_TIME);
+                mEditor.putLong(SensorsDatabaseHelper.APP_PAUSED_TIME, pausedTime);
+                break;
+        }
+        mEditor.commit();
+        return uri;
     }
 
     @Override

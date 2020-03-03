@@ -13,10 +13,14 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         initAutoTrackViewScreenSdk(this);
+        initAutoAppStartAppEndSdk(this);
     }
 
 
     private void initAutoTrackViewScreenSdk(Application application) {
         SensorsDataAPI.init(application);
+    }
+    private void initAutoAppStartAppEndSdk(Application application) {
+        com.sunnyday.administrator.autotrackappstartappendsdk.SensorsDataAPI.init(application);
     }
 }

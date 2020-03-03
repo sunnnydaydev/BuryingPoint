@@ -1,2 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sunnyday.administrator.autotrackappstartappendsdk" />
+    package="com.sunnyday.administrator.autotrackappstartappendsdk">
+    <application>
+    <provider
+        android:name=".SensorsDataContentProvider"
+        android:authorities="${applicationId}.SensorsDataContentProvider"
+        android:enabled="true"
+        android:exported="false" />
+    </application>
+    </manifest>
+
+
