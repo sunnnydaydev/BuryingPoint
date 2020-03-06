@@ -7,6 +7,6 @@
 
 ###### [2、AppViewScreen全埋点方案](https://github.com/sunnnydaydev/BuryingPoint/blob/master/blogs/2%E3%80%81AppViewScreen%E5%85%A8%E5%9F%8B%E7%82%B9%E6%96%B9%E6%A1%88.md)
 
-
+###### [3、AppStart & AppEnd全埋点方案](https://github.com/sunnnydaydev/BuryingPoint/blob/master/blogs/3%E3%80%81AppStart%20%26%20AppEnd%E5%85%A8%E5%9F%8B%E7%82%B9%E6%96%B9%E6%A1%88.md)
 ###### 更多埋点方式及其方案待续...
 
