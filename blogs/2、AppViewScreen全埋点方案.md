@@ -51,3 +51,6 @@ com.sunnyday.administrator.buryingpoint I/SensorsDataAPI: {
     }
 ```
 
+
+
+###### 5、[项目module地址](https://github.com/sunnnydaydev/BuryingPoint/tree/master/autotrackappviewscreensdk/src/main/java/com/sunnyday/administrator/autotrackappviewscreensdk)
