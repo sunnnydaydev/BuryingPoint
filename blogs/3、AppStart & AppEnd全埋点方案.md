@@ -1,6 +1,6 @@
 ### AppStart & AppEnd全埋点方案
 
-###### 1、安卓的五种进程
+### 一、安卓的五种进程补充
 
 > Android中有五种进程：前台进程，可见进程，服务进程，后台进程，空进程。
 >
@@ -14,19 +14,11 @@
 >
 > 5、空进程：空进程指的是在这些进程内部，没有任何东西在运行。保留这种进程的的唯一目的是用作缓存，以缩短该应用下次在其中运行组件所需的启动时间。
 >
-> ps：
->
-> - 进程回收顺序 5-4-3-2-1
-> - 我们使用安卓studio建立个hello world 工程并运行在手机上时，这时这个app就运行在一个默认的进程中啦。当然我们还可以在清单文件中给四大组件的process属性添加值让其运行在新的进程中。
 
+### 二、判断应用进程是否在前台
 
+###### [1、github流行的几种方案](https://github.com/sunnnydaydev/AppIsForground)，但是这些方案都不能解决如下问题：
 
-###### 2、判断应用进程是否在前台
-
-> [github的方案参考](https://github.com/wenmingvs/AndroidProcess)
->
-> 针对github方案产生的疑问：
->
 > 1、应用程序如果有多个进程该如何判断？
 >
 > > 1、转换为跨进程通信的问题
@@ -51,4 +43,7 @@
 > >
 > >   ​
 >
-> 
+
+
+
+###### [项目module地址](https://github.com/sunnnydaydev/BuryingPoint/tree/master/autotrackappstartappendsdk)

@@ -261,6 +261,9 @@ public class SensorsDataPrivate {
         }
     }
 
+    /**
+     * 格式化json字符串
+     * */
     public static String formatJson(String jsonStr) {
         try {
             if (null == jsonStr || "".equals(jsonStr)) {
