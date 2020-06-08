@@ -17,7 +17,7 @@
 
 ### 二、判断应用进程是否在前台
 
-###### [1、github流行的几种方案](https://github.com/sunnnydaydev/AppIsForground)，但是这些方案都不能解决如下问题：
+###### [1、github流行的几种方案](https://github.com/sunnnydaydev/AppIsForground)，但是这些方案都不能解决如下两问题：
 
 > 1、应用程序如果有多个进程该如何判断？
 >
@@ -31,19 +31,16 @@
 >
 > 2、应用程序如果发生崩溃、被强杀该如何判断应用是处于前台还是后台？
 >
-> > 使用Session来解决：
-> >
-> > 1、当app的一个页面退出时（onpause），如果30s内没有新的页面打开我们就认为app进入后台（app end）如果有新的页面进来），则存储一个标记位来标记已有新的页面进来。标记位需要实现进程间的共享，即通过ContentProvider+SharedPreferences来进行存储。然后通过ContentObserver监听到新页面进来的标记位改变，从而可以取消上个页面退出时启动的倒计时。
-> >
-> > 2、当app的一个页面显示出来时（onstart）判断与上一个退出界面的间隔是否超过30s：
-> >
-> > - 没有超过30s直接出发appScreen事件。
-> >
-> > - 超过30s时，我们继续判断之前是否出发过app end（程序可能崩溃，或者被强杀导致app end 没触发），如果没有，则先触发AppEnd事件，然后再触发AppStart和AppViewScreen事件
-> >
-> >   ​
->
+> > 使用session概念来解决
 
+### 三、多进程下判断app是否处于前台的原理
 
+###### 1、基本原理
+
+> ContentProvider+SharedPreferences+Session概念
+
+###### 2、原理图解
+
+![原理图]()
 
 ###### [项目module地址](https://github.com/sunnnydaydev/BuryingPoint/tree/master/autotrackappstartappendsdk)
