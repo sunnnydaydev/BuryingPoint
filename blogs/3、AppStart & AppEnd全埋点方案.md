@@ -41,6 +41,6 @@
 
 ###### 2、原理图解
 
-![原理图]()
+![原理图](https://github.com/sunnnydaydev/BuryingPoint/blob/master/photos/pageout.png)
 
 ###### [项目module地址](https://github.com/sunnnydaydev/BuryingPoint/tree/master/autotrackappstartappendsdk)
