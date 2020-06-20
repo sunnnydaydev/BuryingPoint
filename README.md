@@ -16,5 +16,19 @@
 
 ###### [4、AppClick：代理View.OnclickListener方式](https://github.com/sunnnydaydev/AppClick_One)
 
-###### 更多埋点方式及其方案待续...
+###### 5、AppClick：代理Window.Callback方式
+
+###### 6、AppClick：代理View.AccessibilityDelegate方式
+
+###### 7、AppClick：基于onTouchEvent上的透明层方式
+
+###### 8、AppClick：使用AspectJ-AOP技术
+
+###### 9、AppClick：使用ASM技术
+
+###### 10、AppClick：使用Javassist技术
+
+###### 11、AppClick：使用AST-APT技术
+
+
 
